@@ -1,0 +1,127 @@
+#* @vtlvariable name="action" type="com.easesolutions.jira.plugins.easemailhandler.admin.web.EaseMailHandlerConfigAction" *#
+#* @vtlvariable name="requestContext" type="com.atlassian.jira.util.velocity.VelocityRequestContext" *#
+
+<html>
+<head>
+    <title>Mail Handler Configuration</title>
+    <meta name="decorator" content="admin"/>
+</head>
+
+
+<body>
+
+
+<form action="EaseMailHandlerConfig!edit.jspa" method="post" class="aui">
+    <h3>easeEmail Handler Configuration</h3>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="compulsoryFields">FieldConfigurationSchemeId - Compulsory Fields</label>
+            <input class="text long-field" type="text" id="compulsoryFields" name="compulsoryFields"
+            value="$action.htmlEncode($action.compulsoryFields)">
+            <div class="description">
+            Optional, the fields listed here must exist in email body as @fieldname, otherwise the incoming email is rejected.<br/>
+            Use field configuration scheme id as key. Note: for customfield use id instead of name, i.e. use customfield_xxx, for<br/>
+            system field,refer to IssueFieldConstants class. Note: only fields appear in create issue screen will be mandatory,<br/>
+            and you do not need to specify for summary field as it is always mandatory.
+            Usage e.g. 11000;components,customfield_1234:12000;duedate
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="restrictions">Project - Restricted Fields</label>
+            <input class="text long-field" type="text" id="restrictions" name="restrictions"
+            value="$action.htmlEncode($action.restrictions)">
+            <div class="description">
+            Optional, some project has some restricted fields,i.e. only some roles can view/set the field.<br/>
+            usage: projectKey1;fieldName;fieldId;isAllowReporter;roleName1,roleName2:projectKey2;ieldName;fieldId;isAllowReporter;roleName1,roleName2<br/>
+            e.g. ccs;customer;10000;true;ccs-ae:ccs;customer/email;10001;true;ccs-ae:ccs;customer/phone;10002;true;ccs-ae
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="assigneeOption">workflow scheme id - Assignee option</label>
+            <input class="text long-field" type="text" id="assigneeOption" name="assigneeOption"
+            value="$action.htmlEncode($action.assigneeOption)">
+            <div class="description">
+            Optional, when create issue via email, we can set the assignee of the issue according to this setting<br/>
+            if a workflow is not configured here, then set the assignee to project's default assignee(normally project lead or component lead)<br/>
+            usage: workflowSchemeId1;reporter:workflowSchemeId2;lead:workflowSchemeId3;emailbody<br/>
+            here reporter means the issue will be assigned to the sender, lead means the issue will be assigned to project lead,<br/>
+            another usage:  workflowSchemeId1;<b>component</b>,reporter:workflowSchemeId2;lead,<b>component</b>:workflowSchemeId3;<b>component</b>,emailbody<br/>
+            by adding <b>component</b>, the assignee will be the specified component's default assignee<br/>
+            emailbody means it allow sender to specify @assignee=xxxx, if sender does not specify then use project's default assignee.
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="defaultProject">Default Project</label>
+            <input class="text long-field" type="text" id="defaultProject" name="defaultProject"
+            value="$action.htmlEncode($action.defaultProject)">
+            <div class="description">
+            Optional, if @project is not specified in email body, then the issue will be created in this default project. enter the default project key here.
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="defaultReporter">Default Reporter</label>
+            <input class="text long-field" type="text" id="defaultReporter" name="defaultReporter"
+            value="$action.htmlEncode($action.defaultReporter)">
+            <div class="description">
+            Optional, if the sender is not a valid jira user's email address, then the issue will be created using this default reporter as issue reporter. Enter the user name here.
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="senderEmailCfId">Sender Email CF ID</label>
+            <input class="text long-field" type="text" id="senderEmailCfId" name="senderEmailCfId"
+            value="$action.htmlEncode($action.senderEmailCfId)">
+            <div class="description">
+            Optional, the sender's email address will be stored in this custom field. Enter the custom field id for this custom field, format: customfield_xxx.
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="toFieldCfId">To Address CF ID</label>
+            <input class="text long-field" type="text" id="toFieldCfId" name="toFieldCfId"
+            value="$action.htmlEncode($action.toFieldCfId)">
+            <div class="description">
+            Optional, the To address in incoming email will be stored in this custom field. Enter the custom field id for this custom field, format: customfield_xxx.
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <div class="field-group">
+            <label for="ccFieldCfId">CC Address CF ID</label>
+            <input class="text long-field" type="text" id="ccFieldCfId" name="ccFieldCfId"
+            value="$action.htmlEncode($action.ccFieldCfId)">
+            <div class="description">
+            Optional, the CC address in incoming email will be stored in this custom field. Enter the custom field id for this custom field, format: customfield_xxx.
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" type="submit" value="Save">
+        </div>
+    </div>
+</form>
+
+</body>
+
+
+</html>

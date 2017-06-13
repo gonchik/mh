@@ -1,0 +1,9 @@
+atlas-package to get the jar file, then install it as the way for plugin type 2 
+
+to run mail fetcher immediately, open the url
+https://localhost:8443/ifx/plugins/servlet/mailrunnow?mailServerId=10200&foldername=Jira&forwardEmail=xxxx%40xxx.com&handlerParameter=stripquotes%3D%2Ccatchemail%3D%2Cbulk%3Dforward%2CforwardEmail%3Dxxxx%40xxx.com%2Cccwatcher%3D&handler=com.easesolutions.jira.plugins.easemailhandler.handler.CreateOrCommentHandler
+
+or https://localhost:8443/ifx/plugins/servlet/mailrunnow?mailServerId=10200&foldername=Jira&forwardEmail=xxxx%40xxx.com&handlerParameter=stripquotes%3D%2Ccatchemail%3D%2Cbulk%3Dforward%2CforwardEmail%3Dxxxx%40xxx.com%2Cccwatcher%3D&handler=com.easesolutions.jira.plugins.easemailhandler.handler.CreateOrCommentHandler&serviceType=mail
+
+
+the first URL is to fetch from file using FileService, the email in the folder should not be s-mime signed/encrypted.

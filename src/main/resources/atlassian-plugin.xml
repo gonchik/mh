@@ -1,0 +1,79 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+
+
+    <web-section key="easeMailHandler-websection" name="easeMailHandler-websection" location="admin_plugins_menu" weight="145">
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
+            <param name="permission">admin</param>
+        </condition>
+        <!-- i18n-name-key="section.example.one.name"  -->
+        <description>easeMailHandler settings</description>
+        <!-- key="section.example.one.desc" -->
+        <label>easeMailHandler</label>
+        <!-- key="section.example.one.label" -->
+    </web-section>
+
+
+    <web-item key="easeMailHandler-config" name="easeMailHandler Configuration Menu" section="admin_plugins_menu/easeMailHandler-websection" weight="150">
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
+            <param name="permission">admin</param>
+        </condition>
+        <label>Configuration</label>
+        <link linkId="easeMailHandler-config-link">/secure/EaseMailHandlerConfig!view.jspa</link>
+    </web-item>
+
+
+    <webwork1 key="config-webwork" name="easeMailHandler Configuration Actions" class="java.lang.Object">
+        <actions>
+            <!-- Plugin administration page -->
+            <action name="com.easesolutions.jira.plugins.easemailhandler.admin.web.EaseMailHandlerConfigAction"
+                    alias="EaseMailHandlerConfig">
+                <!-- This command shows the current configuration -->
+                <command name="view" alias="EaseMailHandlerConfig">
+                    <view name="securitybreach">/secure/views/permissionviolation.jsp</view>
+                    <view name="success">/plugins/easeMailHandler/templates/config-view.vm</view>
+                </command>
+
+                <!-- This command shows the configuration editing screen -->
+                <command name="edit" alias="EaseMailHandlerConfig">
+                    <view name="securitybreach">/secure/views/permissionviolation.jsp</view>
+                </command>
+
+
+
+            </action>
+        </actions>
+    </webwork1>
+
+
+
+    <message-handler
+            key="easeMailHandler" class="com.easesolutions.jira.plugins.easemailhandler.handler.CreateOrCommentHandler"
+            add-edit-url="/secure/admin/EaseEditHandlerDetails!default.jspa"
+            name="easeMailHandler"
+            weight="0"/>
+
+    <webwork1 key="actions" name="Actions" class="java.lang.Object">
+        <actions>
+            <action name="com.easesolutions.jira.plugins.easemailhandler.web.EditHandlerDetailsWebAction"
+                    alias="EaseEditHandlerDetails"
+                    roles-required="admin">
+                <view name="input">/plugins/easeMailHandler/templates/editHandlerDetails.vm</view>
+                <view name="securitybreach">/secure/views/securitybreach.jsp</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <servlet name="mail_runnow" key="mail_runnow" class="com.easesolutions.jira.plugins.easemailhandler.servlet.RunNowServlet">
+        <url-pattern>/mailrunnow</url-pattern>
+    </servlet>
+
+
+
+
+</atlassian-plugin>

@@ -1,0 +1,128 @@
+#* @vtlvariable name="action" type="com.easesolutions.jira.plugins.easemailHandler.web.EditHandlerDetailsWebAction" *#
+#set ($modifierKey = $action.browserUtils.getModifierKey())
+#set ($submitAccessKey = $i18n.getText('AUI.form.submit.button.accesskey'))
+#set ($submitTitle = $i18n.getText('AUI.form.submit.button.tooltip', [$submitAccessKey, $modifierKey]))
+
+#set ($cancelAccessKey = $i18n.getText('AUI.form.cancel.link.accesskey'))
+#set ($cancelTitle = $i18n.getText('AUI.form.cancel.link.tooltip', [$cancelAccessKey, $modifierKey]))
+
+
+#if ($action.getBulk().equals("ignore"))
+#set ($bulkIgnore = "selected")
+#end
+
+#if ($action.getBulk().equals("forward"))
+#set ($bulkForward = "selected")
+#end
+
+#if ($action.getBulk().equals("delete"))
+#set ($bulkDelete = "selected")
+#end
+
+
+#if ($action.getCreateNewUser().equals("true"))
+    #set ($createNewUser = "checked")
+#end
+
+
+
+<html>
+<head>
+    <title>$action.handlerName</title>
+</head>
+<body>
+    <form class="aui" action="EaseEditHandlerDetails.jspa" method="POST" name="mailHandlerForm" id="mailHandlerForm">
+        <div class="form-body">
+            <h2>$action.handlerName</h2>
+            <span class="global-errors-location">
+                #if ($action.getHasErrorMessages())
+                    #foreach ($error in $action.getFlushedErrorMessages())
+                        #AUImessage("error" "" $textutils.htmlEncode(${error}) "" "" "" "false")
+                        #end
+                #end
+            </span>
+
+            <input type="hidden" name="atl_token" value="$atl_token">
+
+
+
+
+            <div class="field-group bulk">
+            <label for="bulk"> Bulk </label>
+            <span class="element-wrapper">
+            <select id="bulk" class="select" name="bulk">
+            <option value="ignore" $!{bulkIgnore}>ignore</option>
+            <option value="forward" $!{bulkForward}>forward</option>
+            <option value="delete" $!{bulkDelete}>delete</option>
+            </select>
+            </span>
+            <div class="description">Action that will be performed for emails with the 'Precedence: bulk' or emails with an 'Auto-Submitted' header that is not set to "no".</div>
+            </div>
+
+
+            <div class="field-group forwardEmail">
+            <label for="forwardEmail">
+                Forward Email
+                <span class="aui-icon icon-required"></span>
+                <span class="content"> Required Field</span>
+            </label>
+            <span class="element-wrapper">
+                <input id="forwardEmail" class="text" type="text" value="$!textutils.htmlEncode(${forwardEmail})" name="forwardEmail">
+            </span>
+            <div class="description"></div>
+            </div>
+
+            <div class="field-group createNewUser">
+                <label for="createNewUser">Create User</label>
+                <span class="element-wrapper">
+                    <input id="createNewUser" type="checkbox" value="true" name="createNewUser" $!{createNewUser}/>
+                </span>
+                <div class="description">If selected, the sender will be created as new user if not existing.</div>
+            </div>
+
+            <div class="field-group newUserGroup">
+            <label for="newUserGroup">
+                New User Group
+            </label>
+            <span class="element-wrapper">
+                <input id="newUserGroup" class="text" type="text" value="$!textutils.htmlEncode($!{newUserGroup})" name="newUserGroup">
+            </span>
+            <div class="description">group name</div>
+            </div>
+
+            <div class="field-group mailBoxEmail">
+            <label for="mailBoxEmail">
+                Mailbox email
+            </label>
+            <span class="element-wrapper">
+                <input id="mailBoxEmail" class="text" type="text" value="$!textutils.htmlEncode($!{mailBoxEmail})" name="mailBoxEmail">
+            </span>
+            <div class="description">the mailbox's email</div>
+            </div>
+        </div>
+
+        <div class="buttons-container form-footer">
+            <div class="hints-section" style="display: none;">
+                <p id="hints-header">
+                    $i18n.getText('jmp.editHandlerDetails.hints')
+                </p>
+                <p class="rejecting-messages-without-author">
+                    $i18n.getText('jmp.editHandlerDetails.rejecting.messages')
+                </p>
+            </div>
+            <div class="buttons">
+
+                #if ($action.editing)
+                    #set ($addButtonLabel = $i18n.getText('common.words.save'))
+                #else
+                    #set ($addButtonLabel = $i18n.getText('common.forms.add'))
+                #end
+                <input id="addButton" type="submit" class="button" value="$!addButtonLabel" accesskey="$submitAccessKey" title="Save">
+                <a href="IncomingMailServers.jspa" class="cancel" accesskey="$cancelAccessKey" title="$cancelTitle">$i18n.getText("AUI.form.cancel.link.text")</a>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
+
